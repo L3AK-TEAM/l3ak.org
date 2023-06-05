@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://l3ak.org/writeups/</loc>
+    <lastmod>2023-05-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://l3ak.org/members/</loc>
+  </url><url>
+    <loc>https://l3ak.org/categories/</loc>
+  </url><url>
+    <loc>https://l3ak.org/posts/dantectf/</loc>
+  </url><url>
+    <loc>https://l3ak.org/</loc>
+  </url><url>
+    <loc>https://l3ak.org/posts/</loc>
+  </url><url>
+    <loc>https://l3ak.org/tags/</loc>
+  </url><url>
+    <loc>https://l3ak.org/home/</loc>
+  </url>
+</urlset>
