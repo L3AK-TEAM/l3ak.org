@@ -19,5 +19,5 @@ https://l3ak.org/posts/* --> Write-Ups for various CTF challenges that we solved
 </div>
 
 <div align="left">
-  <img height="55" width="55" src="https://github.com/L3AK-TEAM/l3ak.org/assets/102762345/f26b6943-994e-4b51-b3a6-941ccc43d40c">
+  <img height="50" width="50" src="https://github.com/L3AK-TEAM/l3ak.org/assets/102762345/f26b6943-994e-4b51-b3a6-941ccc43d40c">
 </div>
