@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>DanteCTF 2023 - [Radio Frequency]  :: L3ak CTF</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Writeup for both of RF challenges from DanteCTF 2023. " />
+<meta name="keywords" content="" />
+
+  <meta name="robots" content="noodp" />
+
+<link rel="canonical" href="https://l3ak.org/writeups/dantectf/" />
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="https://l3ak.org/styles.css">
+
+
+
+
+
+
+
+  <link rel="shortcut icon" href="https://l3ak.org/icon.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="DanteCTF 2023 - [Radio Frequency] ">
+<meta property="og:description" content="Writeup for both of RF challenges from DanteCTF 2023. " />
+<meta property="og:url" content="https://l3ak.org/writeups/dantectf/" />
+<meta property="og:site_name" content="L3ak CTF" />
+
+  
+    <meta property="og:image" content="https://l3ak.org/icon.png">
+  
+
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+
+
+  <meta property="article:published_time" content="2023-06-06 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="green">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/home">
+  <div class="logo">
+    [root@l3ak:~]# 
+  </div>
+</a>
+
+    </div>
+    
+      <ul class="menu menu--mobile">
+  <li class="menu__trigger">Menu&nbsp;▾</li>
+  <li>
+    <ul class="menu__dropdown">
+      
+        
+          <li><a href="/home">Home</a></li>
+        
+      
+        
+          <li><a href="/members">Members</a></li>
+        
+      
+        
+          <li><a href="/writeups">Write-ups</a></li>
+        
+      
+      
+    </ul>
+  </li>
+</ul>
+
+    
+    
+  </div>
+  
+    <nav class="navigation-menu">
+  <ul class="navigation-menu__inner menu--desktop">
+    
+      
+        
+          <li><a href="/home" >Home</a></li>
+        
+      
+        
+          <li><a href="/members" >Members</a></li>
+        
+      
+        
+          <li><a href="/writeups" >Write-ups</a></li>
+        
+      
+      
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<article class="post">
+  <h1 class="post-title">
+    <a href="https://l3ak.org/writeups/dantectf/">DanteCTF 2023 - [Radio Frequency]</a>
+  </h1>
+  <div class="post-meta"><time class="post-date">2023-06-06</time><span class="post-author">0x157 &amp;&amp; Suvoni</span></div>
+
+  
+  
+
+
+  
+
+  <div class="post-content"><div>
+        <p><img src="chall1.png" alt="C0ULD N0T B3 L04AD3D"></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Difficulty</th>
+<th style="text-align:center">Category</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><strong>Easy</strong></td>
+<td style="text-align:center"><strong>Forensics🩸</strong></td>
+</tr>
+</tbody>
+</table>
+<p>First as always , lets download the file and see what we can do. This can take sometime since its not a small download (834 MB).</p>
+<p><img src="initd1.png" alt="C0ULD N0T B3 L04AD3D"></p>
+<p>As we can see its a 7-Zip archive, lets extract what&rsquo;s inside this zip by running this command
+<strong><code>7z e ImagoQualitatis.7z</code></strong> .</p>
+<p><img src="file1.png" alt="C0ULD N0T B3 L04AD3D"></p>
+<p>Great, we extracted the file successfully ! I checked what type of file we are working with but no useful results came up, as well as I noticed that the size of it is very large being 4.6 GB. On top of that I also checked the file header , no luck there either even after some googling. We for sure know its something to do with <strong>RF</strong> so i researched a bit on software used to open such files, and to my luck i found a software called <code>GQRX</code>, which also is mentioned in the file name !</p>
+<p><strong>Let&rsquo;s install it and give it a shot</strong></p>
+<p><img src="rad1.png" alt="C0ULD N0T B3 L04AD3D"></p>
+<p>Interesting okay , time to try to open the file with that software and see if we get any luck, that can be done with going to <code>Tools --&gt; I/Q Recoder --&gt; Specifying the absolute path to our file</code> .</p>
+<p><img src="start1.png" alt="C0ULD N0T B3 L04AD3D"></p>
+<p>This was something we were for sure looking for ! If there was one thing I learned from playing <code>CTFs</code> is always be very patient while doing these type of challenges, and to no surprise after a few minutes I see a curly closing brace <strong>}</strong> which hints that other parts of the flag are to come.</p>
+<p><img src="br.png" alt="C0ULD N0T B3 L04AD3D"></p>
+<p>By waiting for about 4-5 minutes I ended up putting the pieces of the flag together character by character and in the end we got the <em>flag</em> and the first blood 🩸!</p>
+<p><strong>FLAG</strong> <em>&ndash;&gt;</em> <strong><code>DANTE{n3w_w4v35_0ld_5ch00l}</code></strong></p>
+<hr>
+<h1 id="almost-perfect-remote-signing">Almost Perfect Remote Signing<a href="#almost-perfect-remote-signing" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
+<p><img src="chall2.png" alt="C0ULD N0T B3 L04AD3D"></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Difficulty</th>
+<th style="text-align:center">Category</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><strong>Hard</strong></td>
+<td style="text-align:center"><strong>Forensics</strong></td>
+</tr>
+</tbody>
+</table>
+<p>In this challenge, we are given a <code>.wav</code> file with the flag hidden somewhere inside it. Listening to the file yields nothing but ~8 seconds of what sounds like static noise, so we know the flag is encoded inside the sound data somehow. Running the file through steg tools like <strong>Binwalk</strong> and <strong>WavSteg</strong> doesn&rsquo;t reveal much, and LSB analysis doesn&rsquo;t show any signs of the image being encoded in the bits of the file. At this point, I opened the file in <code>Sonic Visualiser</code> to see what secrets may be encoded in the spectrogram or frequency information of the sound data. Examining the spectrogram, I saw something interesting:</p>
+<p><img src="spec.png" alt="C0ULD N0T B3 L04AD3D"></p>
+<p>There is a faint binary signal present in the spectrogram! This discovery led me to think that the flag was encoded in the sound data in binary manner somewhow (using 0&rsquo;s and 1&rsquo;s). Being a novice in the area of digital signal processing, I had to do a significant amount of research to determine how this is achieved - via <a href="https://en.wikipedia.org/wiki/Frequency-shift_keying">AFSK</a> (Audio Frequency Shift Keying). In this protocol, binary data is modulated onto a continuous analog signal for long-distance transmission (e.g., radio). To decode this manually would be a real hassle, so I looked up tools to automate the process. After trying and failing with tools like <strong>GnuRadio</strong>, I stumbled upon <a href="https://www.kali.org/tools/multimon-ng/">multimon-ng</a>. This tool will demodulate the signal and output the encoded data automatically, as long as it knows the exact protocol being used. There are several AFSK protocols to choose from:</p>
+<p><img src="proto.png" alt="C0ULD N0T B3 L04AD3D"></p>
+<p>And I ended up choosing AFSK1200 to start with (which turned out to be the right choice!).
+This tool requires the <code>.wav</code> file to be in <code>.raw</code> format, which can be achieved using sox:</p>
+<p><strong><code>sox -t wav aprs_out.wav -esigned-integer -b16 -r 22050 -t raw aprs_out.raw</code></strong></p>
+<p>This command essentially takes the wave file and converts it to <code>.raw</code> format. Notice the sampling rate of 22050Hz being used here, which is the standard for these types of radio transmissions. Once this is done, we can use <strong>multimon-ng</strong> to decode the signal:</p>
+<p><strong><code>multimon-ng -t raw -a AFSK1200 aprs_out.raw &gt; flag</code></strong></p>
+<p>After doing those steps the decoded data looks something like this.</p>
+<p><img src="decoded.png" alt="C0ULD N0T B3 L04AD3D"></p>
+<p>We are definitely on the right track - we can see &ldquo;Hello flag!&rdquo; in every packet. If we scrutinize the data closely, we can see that there are slightly different coordinates used in each packet transmission:</p>
+<p><img src="decoded2.png" alt="C0ULD N0T B3 L04AD3D"></p>
+<p>Is the flag encoded in these coordinates somehow? Plotting these coordinates on a Cartesian coordinate system yields:</p>
+<p><img src="plane.png" alt="C0ULD N0T B3 L04AD3D"></p>
+<p>It&rsquo;s not pretty, but zooming in around small groups of characters can help us read the flag characters:</p>
+<p><img src="plane2.png" alt="C0ULD N0T B3 L04AD3D"></p>
+<p><strong>FLAG</strong> <em>&ndash;&gt;</em> <strong><code>DANTE{FLAG_REPORTING_SYSTEM}</code></strong></p>
+<hr>
+
+      </div></div>
+
+  
+
+  
+    
+
+  
+</article>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>⛳</span>
+    
+      <span>L3ak 2023</span>
+      </div>
+  </div>
+</footer>
+
+
+
+
+
+
+<script type="text/javascript" src="/bundle.min.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>
