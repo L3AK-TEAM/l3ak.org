@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>NahamConCTF 2023 - [Signed Jeopardy] :: L3ak CTF</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Writeup for Signed Jeopardy from NahamConCTF 2023." />
+<meta name="keywords" content="" />
+
+  <meta name="robots" content="noodp" />
+
+<link rel="canonical" href="https://l3ak.org/posts/nahamconctf/" />
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="https://l3ak.org/styles.css">
+
+
+
+
+
+
+
+  <link rel="shortcut icon" href="https://l3ak.org/icon.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="NahamConCTF 2023 - [Signed Jeopardy]">
+<meta property="og:description" content="Writeup for Signed Jeopardy from NahamConCTF 2023." />
+<meta property="og:url" content="https://l3ak.org/posts/nahamconctf/" />
+<meta property="og:site_name" content="L3ak CTF" />
+
+  
+    <meta property="og:image" content="https://l3ak.org/icon.png">
+  
+
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+
+
+  <meta property="article:published_time" content="2023-06-18 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="green">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/home">
+  <div class="logo">
+    [root@L3ak:~]# 
+  </div>
+</a>
+
+    </div>
+    
+      <ul class="menu menu--mobile">
+  <li class="menu__trigger">Menu&nbsp;▾</li>
+  <li>
+    <ul class="menu__dropdown">
+      
+        
+          <li><a href="/home">Home</a></li>
+        
+      
+        
+          <li><a href="/members">Members</a></li>
+        
+      
+        
+          <li><a href="/posts">Write-ups</a></li>
+        
+      
+      
+    </ul>
+  </li>
+</ul>
+
+    
+    
+  </div>
+  
+    <nav class="navigation-menu">
+  <ul class="navigation-menu__inner menu--desktop">
+    
+      
+        
+          <li><a href="/home" >Home</a></li>
+        
+      
+        
+          <li><a href="/members" >Members</a></li>
+        
+      
+        
+          <li><a href="/posts" >Write-ups</a></li>
+        
+      
+      
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<article class="post">
+  <h1 class="post-title">
+    <a href="https://l3ak.org/posts/nahamconctf/">NahamConCTF 2023 - [Signed Jeopardy]</a>
+  </h1>
+  <div class="post-meta"><time class="post-date">2023-06-18</time><span class="post-author">Suvoni</span></div>
+
+  
+  
+
+
+  
+
+  <div class="post-content"><div>
+        <p><img src="test.png" alt="challenge"></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Difficulty</th>
+<th style="text-align:center">Category</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><strong>Medium</strong></td>
+<td style="text-align:center"><strong>Crypto</strong></td>
+</tr>
+</tbody>
+</table>
+<p>This writeup covers the challenge Signed Jeopardy from NahamConCTF 2023, which was probably the hardest crypto challenge in the competition, with only 44 solves.</p>
+<p>In this challenge, we are given a file <code>server.sage</code> which implements the Elliptic Curve Digital Signature Algorithm (ECDSA) on the P521 curve. After generating the public key, the program opens a file called <code>questions.txt</code> and randomly selects questions about video game history and lore. It signs the answer to those questions and prints the question and signed answer to the console. The user can choose to receive questions and signed answers, and can also choose to sign a custom message. If the signature of the user&rsquo;s message equals the signature calculated by the program, it gives the flag.</p>
+<p><strong>server.sage:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Python" data-lang="Python"><span style="color:#f92672">from</span> random <span style="color:#f92672">import</span> randint
+<span style="color:#f92672">from</span> hashlib <span style="color:#f92672">import</span> sha512
+
+<span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#34;flag.txt&#34;</span>,<span style="color:#e6db74">&#39;r&#39;</span>) <span style="color:#66d9ef">as</span> f:
+	flag <span style="color:#f92672">=</span> f<span style="color:#f92672">.</span>read()
+
+questions <span style="color:#f92672">=</span> []
+answers <span style="color:#f92672">=</span> []
+<span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#39;questions.txt&#39;</span>,<span style="color:#e6db74">&#39;r&#39;</span>) <span style="color:#66d9ef">as</span> f:
+	<span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> f<span style="color:#f92672">.</span>readlines():
+		a <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">&#39;</span>)
+		questions<span style="color:#f92672">.</span>append(a[<span style="color:#ae81ff">0</span>])
+		answers<span style="color:#f92672">.</span>append(a[<span style="color:#ae81ff">1</span>][:<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>])
+
+<span style="color:#75715e"># P521 standard curve parameters</span>
+p <span style="color:#f92672">=</span> <span style="color:#ae81ff">6864797660130609714981900799081393217269435300143305409394463459185543183397656052122559640661454554977296311391480858037121987999716643812574028291115057151</span>
+a <span style="color:#f92672">=</span> <span style="color:#ae81ff">6864797660130609714981900799081393217269435300143305409394463459185543183397656052122559640661454554977296311391480858037121987999716643812574028291115057148</span>
+b <span style="color:#f92672">=</span> <span style="color:#ae81ff">1093849038073734274511112390766805569936207598951683748994586394495953116150735016013708737573759623248592132296706313309438452531591012912142327488478985984</span>
+Gx <span style="color:#f92672">=</span> <span style="color:#ae81ff">2661740802050217063228768716723360960729859168756973147706671368418802944996427808491545080627771902352094241225065558662157113545570916814161637315895999846</span>
+Gy <span style="color:#f92672">=</span> <span style="color:#ae81ff">3757180025770020463545507224491183603594455134769762486694567779615544477440556316691234405012945539562144444537289428522585666729196580810124344277578376784</span>
+E <span style="color:#f92672">=</span> EllipticCurve(GF(p), [a, b])
+G <span style="color:#f92672">=</span> E(Gx, Gy)
+n <span style="color:#f92672">=</span> <span style="color:#ae81ff">6864797660130609714981900799081393217269435300143305409394463459185543183397655394245057746333217197532963996371363321113864768612440380340372808892707005449</span>
+k <span style="color:#f92672">=</span> randint(<span style="color:#ae81ff">1</span>,n<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
+d <span style="color:#f92672">=</span> randint(<span style="color:#ae81ff">1</span>,n<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
+Pub <span style="color:#f92672">=</span> d<span style="color:#f92672">*</span>G
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">menu</span>():
+	print(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">What service would you like?&#34;</span>)
+	print(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">1. Question&#34;</span>)
+	print(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">2. Flag&#34;</span>)
+	print(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">3. Quit&#34;</span>)
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sign</span>():
+	index <span style="color:#f92672">=</span> randint(<span style="color:#ae81ff">0</span>,len(questions)<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
+	question <span style="color:#f92672">=</span> questions[index]
+	answer <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;What is &#34;</span><span style="color:#f92672">+</span>answers[index]<span style="color:#f92672">.</span>upper()<span style="color:#f92672">+</span><span style="color:#e6db74">&#34;?&#34;</span>
+	m_hash <span style="color:#f92672">=</span> int(sha512(answer<span style="color:#f92672">.</span>encode())<span style="color:#f92672">.</span>hexdigest(), <span style="color:#ae81ff">16</span>)
+	P <span style="color:#f92672">=</span> k<span style="color:#f92672">*</span>G
+	r <span style="color:#f92672">=</span> int(P[<span style="color:#ae81ff">0</span>]) <span style="color:#f92672">%</span> n
+	s <span style="color:#f92672">=</span> ((m_hash <span style="color:#f92672">+</span> (r<span style="color:#f92672">*</span>d))<span style="color:#f92672">/</span>k)<span style="color:#f92672">%</span>n
+	print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Here is the question: </span><span style="color:#e6db74">{</span>question<span style="color:#e6db74">}</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">And here is the signature: (</span><span style="color:#e6db74">{</span>r<span style="color:#e6db74">}</span><span style="color:#e6db74">, </span><span style="color:#e6db74">{</span>s<span style="color:#e6db74">}</span><span style="color:#e6db74">)&#34;</span>)
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_flag</span>():
+	print(<span style="color:#e6db74">&#34;Please give the message&#34;</span>)
+	message <span style="color:#f92672">=</span> input(<span style="color:#e6db74">&#34;&#34;</span>)
+	<span style="color:#66d9ef">for</span> a <span style="color:#f92672">in</span> answers:
+		<span style="color:#66d9ef">if</span> a<span style="color:#f92672">.</span>casefold() <span style="color:#f92672">in</span> message<span style="color:#f92672">.</span>casefold():
+			print(<span style="color:#e6db74">&#34;I can&#39;t have you using the answer of one of the questions as the message!&#34;</span>)
+			quit()
+	print(<span style="color:#e6db74">&#34;Please give the r value of the signature&#34;</span>)
+	r_given <span style="color:#f92672">=</span> int(input(<span style="color:#e6db74">&#34;&#34;</span>))
+	print(<span style="color:#e6db74">&#34;Please give the s value of the signature&#34;</span>)
+	s_given <span style="color:#f92672">=</span> int(input(<span style="color:#e6db74">&#34;&#34;</span>))
+	m_hash <span style="color:#f92672">=</span> int(sha512(message<span style="color:#f92672">.</span>encode())<span style="color:#f92672">.</span>hexdigest(), <span style="color:#ae81ff">16</span>)
+	P <span style="color:#f92672">=</span> k<span style="color:#f92672">*</span>G
+	r <span style="color:#f92672">=</span> int(P[<span style="color:#ae81ff">0</span>]) <span style="color:#f92672">%</span> n
+	s <span style="color:#f92672">=</span> ((m_hash <span style="color:#f92672">+</span> (r<span style="color:#f92672">*</span>d))<span style="color:#f92672">/</span>k)<span style="color:#f92672">%</span>n
+	<span style="color:#66d9ef">if</span> r <span style="color:#f92672">==</span> r_given <span style="color:#f92672">and</span> s <span style="color:#f92672">==</span> s_given:
+		print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;As promised, here&#39;s your flag --&gt; </span><span style="color:#e6db74">{</span>flag<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+		quit()
+	<span style="color:#66d9ef">else</span>:
+		print(<span style="color:#e6db74">&#34;Not the right signature. HAHAHA!&#34;</span>)
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+	print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Welcome to my ECDSA Jeopardy!</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">Here is the public key:</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">Public key = </span><span style="color:#e6db74">{</span>Pub<span style="color:#e6db74">}</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">I&#39;ll sign the answers and give them to you.&#34;</span>)
+	<span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+		menu()
+		choice <span style="color:#f92672">=</span> int(input(<span style="color:#e6db74">&#34;&#34;</span>))
+		<span style="color:#66d9ef">if</span> choice <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
+			sign()
+		<span style="color:#66d9ef">elif</span> choice <span style="color:#f92672">==</span> <span style="color:#ae81ff">2</span>:
+			get_flag()
+		<span style="color:#66d9ef">elif</span> choice <span style="color:#f92672">==</span> <span style="color:#ae81ff">3</span>:
+			quit()
+		<span style="color:#66d9ef">else</span>:
+			print(<span style="color:#e6db74">&#34;Invalid choice. Please try again.&#34;</span>)
+
+<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+	main()
+</code></pre></div><p>After careful inspection of the code in <code>server.sage</code>, one can observe that the same nonce value <code>k</code> is reused to sign every answer. This is a critical implementation flaw in the ECDSA and the vulnerability which we will exploit in this challenge to retrieve the flag.</p>
+<p>In the ECDSA, a random nonce value <code>k</code> is generated for each signature creation. The nonce value is used in conjunction with the private key to compute a point on the elliptic curve, which is in turn transformed into a valid signature. Since the purpose of the nonce is to provide randomness (uniqueness) to the signature generation process, it is of vital importance that <code>k</code> remains secret and is never reused. If it is reused, the attacker can directly compute <code>k</code> and the private key <code>d</code> and then forge signatures for arbitrary messages. As explained <a href="https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm">here</a>, if we have two messages <code>m1</code> and <code>m2</code> and their signatures <code>(r,s1)</code> and <code>(r,s2)</code>, we can compute the message hashes <code>z1</code> and <code>z2</code> and compute <code>k</code> and <code>d</code> by:</p>
+<p><img src="eqn.png" alt="eqn"></p>
+<p>Thus, if we can select two questions from the server to answer - making sure to record the answer signatures - we can recompute <code>k</code> and <code>d</code> using the equations above. Then, we can choose an example message (such as &ldquo;hello&rdquo;) and compute its signature using the recovered values. Since we generate the signature using the same <code>k</code> and <code>d</code> used by the server, our signature should match the one computed by the server and we should be able to retrieve the flag!</p>
+<p>First, let&rsquo;s choose two simple questions to answer:
+<img src="intro_msg.PNG" alt="intro_msg">
+<img src="question1.PNG" alt="q1">
+<img src="question2.PNG" alt="q2"></p>
+<p>The answers to these questions are Microsoft and Mythical, respectively. Note that these are our messages <code>m1</code> and <code>m2</code>, and we can compute their hashes to find <code>z1</code> and <code>z2</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Python" data-lang="Python"><span style="color:#f92672">from</span> sage.all <span style="color:#f92672">import</span> <span style="color:#f92672">*</span> <span style="color:#75715e"># For elliptic curves</span>
+<span style="color:#f92672">from</span> hashlib <span style="color:#f92672">import</span> sha512 <span style="color:#75715e"># For hasing the message (we actually sign the HASH of the message, not the message itself)</span>
+<span style="color:#f92672">from</span> ecdsa.numbertheory <span style="color:#f92672">import</span> inverse_mod <span style="color:#75715e"># inverse_mod == division (when moduli are involved)</span>
+
+<span style="color:#75715e"># P521 standard curve parameters (from &#39;server.sage&#39;)</span>
+p <span style="color:#f92672">=</span> <span style="color:#ae81ff">6864797660130609714981900799081393217269435300143305409394463459185543183397656052122559640661454554977296311391480858037121987999716643812574028291115057151</span>
+a <span style="color:#f92672">=</span> <span style="color:#ae81ff">6864797660130609714981900799081393217269435300143305409394463459185543183397656052122559640661454554977296311391480858037121987999716643812574028291115057148</span>
+b <span style="color:#f92672">=</span> <span style="color:#ae81ff">1093849038073734274511112390766805569936207598951683748994586394495953116150735016013708737573759623248592132296706313309438452531591012912142327488478985984</span>
+Gx <span style="color:#f92672">=</span> <span style="color:#ae81ff">2661740802050217063228768716723360960729859168756973147706671368418802944996427808491545080627771902352094241225065558662157113545570916814161637315895999846</span>
+Gy <span style="color:#f92672">=</span> <span style="color:#ae81ff">3757180025770020463545507224491183603594455134769762486694567779615544477440556316691234405012945539562144444537289428522585666729196580810124344277578376784</span>
+E <span style="color:#f92672">=</span> EllipticCurve(GF(p), [a, b])
+G <span style="color:#f92672">=</span> E(Gx, Gy) 
+n <span style="color:#f92672">=</span> <span style="color:#ae81ff">6864797660130609714981900799081393217269435300143305409394463459185543183397655394245057746333217197532963996371363321113864768612440380340372808892707005449</span>
+
+<span style="color:#75715e"># Note: n == the order of G (G == elliptic curve base point) which represents the total</span>
+<span style="color:#75715e"># number of different possible points over the curve </span>
+
+<span style="color:#75715e"># Question 1: Rare was bought by this company for $3.19 billion.</span>
+m1 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;What is &#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;Microsoft&#34;</span><span style="color:#f92672">.</span>upper() <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;?&#34;</span>
+
+<span style="color:#75715e"># Question 2: Category of Pokemon that contain some Pokemon like Victini, Mew, Magearna and Zarude.</span>
+m2 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;What is &#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;Mythical&#34;</span><span style="color:#f92672">.</span>upper() <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;?&#34;</span>
+
+<span style="color:#75715e"># Compute the SHA512 hashes of the answers</span>
+z1 <span style="color:#f92672">=</span> int(sha512(m1<span style="color:#f92672">.</span>encode())<span style="color:#f92672">.</span>hexdigest(), <span style="color:#ae81ff">16</span>)
+z2 <span style="color:#f92672">=</span> int(sha512(m2<span style="color:#f92672">.</span>encode())<span style="color:#f92672">.</span>hexdigest(), <span style="color:#ae81ff">16</span>)
+</code></pre></div><p>Now that we have the hashes, we can use the signatures obtained from the server, <code>(r,s1)</code> and <code>(r,s2)</code>, to recover <code>k</code> and <code>d</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Python" data-lang="Python"><span style="color:#75715e"># Signature (r1, s1) of the first answer</span>
+r1 <span style="color:#f92672">=</span> <span style="color:#ae81ff">1465592089909096066855017733143775914413407269725815519508066282537319512650079216133639660455072377153032233958108330075714003734901092347020299988719621322</span>
+s1 <span style="color:#f92672">=</span> <span style="color:#ae81ff">545531076356108942170542517291585227912890321475211086646343990428230857512990453752368923962766593723868745103465428375270149723925686204794806188631057460</span>
+
+<span style="color:#75715e"># Signature (r2, s2) of the second answer</span>
+r2 <span style="color:#f92672">=</span> <span style="color:#ae81ff">1465592089909096066855017733143775914413407269725815519508066282537319512650079216133639660455072377153032233958108330075714003734901092347020299988719621322</span>
+s2 <span style="color:#f92672">=</span> <span style="color:#ae81ff">4189612857039624039238953485069358484257973951950638665234391677969348904883268302761678805371275339935843305522229259291269025045916960785357191121407045404</span>
+
+<span style="color:#75715e"># r must be equal for this to work (this is assumed, but we check just in case)</span>
+<span style="color:#66d9ef">assert</span>(r1 <span style="color:#f92672">==</span> r2)
+
+<span style="color:#75715e"># In the Elliptic Curve Digital Signature Algorithm, if the same k is used to sign</span>
+<span style="color:#75715e"># different signatures (which is the case here), the attacker can recover k using</span>
+<span style="color:#75715e"># the signatures (see https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm):</span>
+m_diff <span style="color:#f92672">=</span> (z1 <span style="color:#f92672">-</span> z2) <span style="color:#f92672">%</span> n
+r1_inv <span style="color:#f92672">=</span> inverse_mod(r1, n)
+s_diff <span style="color:#f92672">=</span> (s1<span style="color:#f92672">-</span>s2) <span style="color:#f92672">%</span> n
+
+<span style="color:#75715e"># Recover k and d using the formulas from the Wikipedia page</span>
+<span style="color:#75715e"># Note that division is actually multiplication by the modular inverse!!</span>
+k <span style="color:#f92672">=</span> (m_diff <span style="color:#f92672">*</span> inverse_mod(s_diff, n)) <span style="color:#f92672">%</span> n
+d <span style="color:#f92672">=</span> (((((s1 <span style="color:#f92672">*</span> k) <span style="color:#f92672">%</span> n) <span style="color:#f92672">-</span> z1) <span style="color:#f92672">%</span> n) <span style="color:#f92672">*</span> r1_inv) <span style="color:#f92672">%</span> n
+</code></pre></div><p>Finally, we can use <code>d</code> and <code>k</code> to forge a valid signature for our own message, &ldquo;hello&rdquo;:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Python" data-lang="Python"><span style="color:#75715e"># Now, sign a dummy message with the calculated keys and print out the signature</span>
+m_dummy <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hello&#34;</span>
+m_dummy_hash <span style="color:#f92672">=</span> int(sha512(m_dummy<span style="color:#f92672">.</span>encode())<span style="color:#f92672">.</span>hexdigest(), <span style="color:#ae81ff">16</span>)
+P <span style="color:#f92672">=</span> k<span style="color:#f92672">*</span>G
+r <span style="color:#f92672">=</span> int(P[<span style="color:#ae81ff">0</span>]) <span style="color:#f92672">%</span> n
+k_inv <span style="color:#f92672">=</span> inverse_mod(k, n)
+s <span style="color:#f92672">=</span> (((m_dummy_hash <span style="color:#f92672">+</span> ((r<span style="color:#f92672">*</span>d)<span style="color:#f92672">%</span>n)) <span style="color:#f92672">%</span> n) <span style="color:#f92672">*</span> k_inv) <span style="color:#f92672">%</span> n
+
+<span style="color:#75715e"># Print the recovered values (k &amp; d) and the forged signature (r, s) to the console</span>
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;k = </span><span style="color:#e6db74">{</span>k<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;d = </span><span style="color:#e6db74">{</span>d<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;r = </span><span style="color:#e6db74">{</span>r<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;s = </span><span style="color:#e6db74">{</span>s<span style="color:#e6db74">}</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
+</code></pre></div><p>Output:</p>
+<pre tabindex="0"><code>k = 3716974158814584297095537945004349475177037436869930102241594403151123939279227740076878779097835920205545515879536767635099702998888815919895730302683232744
+d = 2127236813394369802820290684263172937266777532372353713359324496964461876839310236381964658762852218580616002669515460043669806824304374603332980809612018763
+r = 1465592089909096066855017733143775914413407269725815519508066282537319512650079216133639660455072377153032233958108330075714003734901092347020299988719621322
+s = 1006240130706487892221434509613165618667388551054639964437917316108210445795964748208564217284113625941057144566952722652716045949564018952318007559836194459
+</code></pre><p>Here comes the moment of truth! Let&rsquo;s submit our message <code>hello</code> and forged signature <code>(r,s)</code> to the server and see if it&rsquo;s correct:
+<img src="flag.PNG" alt="flag"></p>
+<p>We got the flag! Moral of the story - <em>never</em> reuse your nonces!</p>
+<p>Until next time&hellip;</p>
+<p><strong>FLAG</strong> <em>&ndash;&gt;</em> <strong><code>flag{a8168c41537604546394c13c8f4ef4b8}</code></strong></p>
+<hr>
+
+      </div></div>
+
+  
+    
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        
+        <span class="button next">
+            <a href="https://l3ak.org/posts/dantectf/">
+                <span class="button__text">DanteCTF 2023 - [Radio Frequency] </span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+    
+
+  
+</article>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>⛳</span>
+    
+      <span>L3ak 2023</span>
+      </div>
+  </div>
+</footer>
+
+
+
+
+
+
+<script type="text/javascript" src="/bundle.min.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>
