@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>TCP1PCTF 2023 - [Invitation] - Blockchain :: L3ak CTF</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Writeup for Invitation - One of the blockchain challenges in TCP1PCTF 2023." />
+<meta name="keywords" content="" />
+
+  <meta name="robots" content="noodp" />
+
+<link rel="canonical" href="https://l3ak.org/posts/tcp1pctf/" />
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="https://l3ak.org/styles.css">
+
+
+
+
+
+
+
+  <link rel="shortcut icon" href="https://l3ak.org/icon.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="TCP1PCTF 2023 - [Invitation] - Blockchain">
+<meta property="og:description" content="Writeup for Invitation - One of the blockchain challenges in TCP1PCTF 2023." />
+<meta property="og:url" content="https://l3ak.org/posts/tcp1pctf/" />
+<meta property="og:site_name" content="L3ak CTF" />
+
+  
+    <meta property="og:image" content="https://l3ak.org/icon.png">
+  
+
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+
+
+  <meta property="article:published_time" content="2023-10-16 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="green">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/home">
+  <div class="logo">
+    [root@L3ak:~]# 
+  </div>
+</a>
+
+    </div>
+    
+      <ul class="menu menu--mobile">
+  <li class="menu__trigger">Menu&nbsp;▾</li>
+  <li>
+    <ul class="menu__dropdown">
+      
+        
+          <li><a href="/home">Home</a></li>
+        
+      
+        
+          <li><a href="/members">Members</a></li>
+        
+      
+        
+          <li><a href="/posts">Write-ups</a></li>
+        
+      
+      
+    </ul>
+  </li>
+</ul>
+
+    
+    
+  </div>
+  
+    <nav class="navigation-menu">
+  <ul class="navigation-menu__inner menu--desktop">
+    
+      
+        
+          <li><a href="/home" >Home</a></li>
+        
+      
+        
+          <li><a href="/members" >Members</a></li>
+        
+      
+        
+          <li><a href="/posts" >Write-ups</a></li>
+        
+      
+      
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<article class="post">
+  <h1 class="post-title">
+    <a href="https://l3ak.org/posts/tcp1pctf/">TCP1PCTF 2023 - [Invitation] - Blockchain</a>
+  </h1>
+  <div class="post-meta"><time class="post-date">2023-10-16</time><span class="post-author">Rabbitsthecat</span></div>
+
+  
+  
+
+
+  
+
+  <div class="post-content"><div>
+        <p><img src="init.png" alt="C0ULD N0T B3 L04AD3D"></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Difficulty</th>
+<th style="text-align:center">Category</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><strong>Medium</strong></td>
+<td style="text-align:center"><strong>Blockchain</strong></td>
+</tr>
+</tbody>
+</table>
+<p>We are given some bytecode in <code>101.txt</code>, and the challenge details in <code>101.txt</code> are as follows:</p>
+<pre tabindex="0"><code>Description:
+    You are provided a bytecode there, yeah?
+    Find out a way to get a certain function name from it,
+    the correct function name begin with &quot;TCP1P&quot; string.
+
+Flag Format
+    if you manage to find the correct function name
+    do the exact same thing as the example below
+    
+    Found Function name: TCP1P_th1s_1s_4_fl4g_()
+        -&gt; remove the &quot;()&quot;
+        -&gt; replace the first &quot;_&quot; with &quot;{&quot;
+        -&gt; replace the last &quot;_&quot; with &quot;}&quot;
+    
+    Final and Right flag format: TCP1P{th1s_1s_4_fl4g}
+</code></pre><h3 id="decompiling-the-bytecode">Decompiling the Bytecode<a href="#decompiling-the-bytecode" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>First, let us decompile the bytecode. We head over to the <a href="https://library.dedaub.com/decompile">Dedaub decompiler</a> to decompile our bytecode. What we get is a mess, but we do see some strings in the decompiled code that hint towards using <code>Function DB</code>.</p>
+<p><img src="Image4.PNG" alt="C0ULD N0T B3 L04AD3D"></p>
+<p>Since the decompiled code wasn&rsquo;t that helpful to us, let&rsquo;s try another decompiler and hope it gives a better result. After pasting our bytecode into <a href="https://etherscan.io/bytecode-decompiler">Etherscan&rsquo;s decompiler</a>, we indeed get some decompiled code, but wait a second, what&rsquo;s this message?</p>
+<p><img src="Image2.png" alt="C0ULD N0T B3 L04AD3D"></p>
+<p>Alright, whatever you say, Etherscan. We remove the construct prefix accordingly, and here&rsquo;s a part of the decompiled result:</p>
+<p><img src="Image3.PNG" alt="C0ULD N0T B3 L04AD3D"></p>
+<p>Huh, that&rsquo;s interesting. The code is comparing <code>var0</code> to a bunch of 4-byte values, and they somehow correspond to functions (for example, <code>0x3d8a63e4</code> apparently corresponds to <code>scam()</code>). Here, we take a wild guess that these 4-byte values are the function signatures of all the functions available in the contract.</p>
+<p>Indeed, we can verify our guess by calculating the signature of <code>scam()</code> ourselves!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#f92672">from</span> Crypto.Hash <span style="color:#f92672">import</span> keccak
+k <span style="color:#f92672">=</span> keccak<span style="color:#f92672">.</span>new(digest_bits <span style="color:#f92672">=</span> <span style="color:#ae81ff">256</span>)
+k<span style="color:#f92672">.</span>update(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;scam()&#39;</span>)
+print(k<span style="color:#f92672">.</span>hexdigest()[:<span style="color:#ae81ff">8</span>]) <span style="color:#75715e"># &#39;3d8a63e4&#39;, which matches 0x3d8a63e4 !</span>
+</code></pre></div><h3 id="function-db">Function DB?<a href="#function-db" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Now that we have a bunch of function signatures, we can just brute-force all possible functions until we get the flag, right?
+No! Brute-forcing is obviously infeasible, so we turn to the next best option - <code>Function DB</code>.</p>
+<p><code>Function DB</code> a.k.a <a href="https://www.4byte.directory/">Ethereum Signature Database</a> is a database that contains over a million function signatures and their corresponding human-readable representation. 
+For example, searching for <code>0x3d8a63e4</code> gives you <code>scam()</code>.</p>
+<p><img src="Image5.PNG" alt="C0ULD N0T B3 L04AD3D"></p>
+<p>The next logical step would be to try all the function signatures and hope we find something in <code>Function DB</code>. And indeed we do!</p>
+<p><img src="Image6.PNG" alt="C0ULD N0T B3 L04AD3D"></p>
+<p>We found the flag - <strong><code>TCP1P{4_Bytes_SigNAtuRe_aS_4n_Invitation_congratz}</code></strong>.</p>
+<p><img src="cleared.png" alt="C0ULD N0T B3 L04AD3D"></p>
+<p>Was a very fun category, me and my team enjoyed this ctf a lot! Till next time.</p>
+
+      </div></div>
+
+  
+    
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        
+        <span class="button next">
+            <a href="https://l3ak.org/posts/buckeyectf/">
+                <span class="button__text">BuckeyCTF 2023 - [New Management] - MISC</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+    
+
+  
+</article>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>⛳</span>
+    
+      <span>L3ak 2023</span>
+      </div>
+  </div>
+</footer>
+
+
+
+
+
+
+<script type="text/javascript" src="/bundle.min.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>
