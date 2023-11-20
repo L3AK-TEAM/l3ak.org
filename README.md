@@ -1,8 +1,9 @@
-## Official Website for L3ak CTF Team
+# Official Website for L3ak CTF Team
 
 **https://l3ak.team**
 
-![image](https://github.com/L3AK-TEAM/l3ak.team/assets/102762345/6a7ddd10-f6c0-4b94-9a3f-ad6e7ddacf51)
+![image](https://github.com/moabid42/l3ak.team/assets/32551454/30bc8175-c9c4-43be-bf78-56b161794550)
+
 
 ### Site Structure
 
@@ -14,10 +15,7 @@ https://l3ak.team/posts/* --> Write-Ups for various CTF challenges that we solve
 
 ---
 
-<div align="center">
+<div align="left">
   <img height="180" width="180" src="https://user-images.githubusercontent.com/102762345/233223040-cf6e5124-72fc-432c-92f4-cf9d3bb96d7f.png"> 
 </div>
 
-<div align="left">
-  <img height="50" width="50" src="https://github.com/L3AK-TEAM/l3ak.team/assets/102762345/f26b6943-994e-4b51-b3a6-941ccc43d40c">
-</div>
