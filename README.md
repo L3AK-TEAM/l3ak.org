@@ -2,14 +2,14 @@
 
 **https://l3ak.team**
 
-![image](https://github.com/L3AK-TEAM/l3ak.org/assets/102762345/6a7ddd10-f6c0-4b94-9a3f-ad6e7ddacf51)
+![image](https://github.com/L3AK-TEAM/l3ak.team/assets/102762345/6a7ddd10-f6c0-4b94-9a3f-ad6e7ddacf51)
 
 ### Site Structure
 
 ```
-https://l3ak.org/home --> Home Page | Background of the Team.
-https://l3ak.org/members --> Current Active Members of the Team and their Categories
-https://l3ak.org/posts/* --> Write-Ups for various CTF challenges that we solved.
+https://l3ak.team/home --> Home Page | Background of the Team.
+https://l3ak.team/members --> Current Active Members of the Team and their Categories
+https://l3ak.team/posts/* --> Write-Ups for various CTF challenges that we solved.
 ```
 
 ---
@@ -19,5 +19,5 @@ https://l3ak.org/posts/* --> Write-Ups for various CTF challenges that we solved
 </div>
 
 <div align="left">
-  <img height="50" width="50" src="https://github.com/L3AK-TEAM/l3ak.org/assets/102762345/f26b6943-994e-4b51-b3a6-941ccc43d40c">
+  <img height="50" width="50" src="https://github.com/L3AK-TEAM/l3ak.team/assets/102762345/f26b6943-994e-4b51-b3a6-941ccc43d40c">
 </div>
