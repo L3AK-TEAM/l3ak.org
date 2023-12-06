@@ -2,19 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on L3ak CTF</title>
-    <link>https://l3ak.org/posts/</link>
+    <link>https://l3ak.team/posts/</link>
     <description>Recent content in Posts on L3ak CTF</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 16 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://l3ak.org/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 16 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://l3ak.team/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>TCP1PCTF 2023 - [Invitation] - Blockchain</title>
-      <link>https://l3ak.org/posts/tcp1pctf/</link>
+      <link>https://l3ak.team/posts/tcp1pctf/</link>
       <pubDate>Mon, 16 Oct 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://l3ak.org/posts/tcp1pctf/</guid>
+      <guid>https://l3ak.team/posts/tcp1pctf/</guid>
       <description>Difficulty Category     Medium Blockchain    We are given some bytecode in 101.txt, and the challenge details in 101.txt are as follows:
-Description:You are provided a bytecode there, yeah?Find out a way to get a certain function name from it,the correct function name begin with &amp;quot;TCP1P&amp;quot; string.Flag Formatif you manage to find the correct function namedo the exact same thing as the example belowFound Function name: TCP1P_th1s_1s_4_fl4g_()-&amp;gt; remove the &amp;quot;()&amp;quot;-&amp;gt; replace the first &amp;quot;_&amp;quot; with &amp;quot;{&amp;quot;-&amp;gt; replace the last &amp;quot;_&amp;quot; with &amp;quot;}&amp;quot;Final and Right flag format: TCP1P{th1s_1s_4_fl4g}Decompiling the Bytecode First, let us decompile the bytecode.</description>
+Description:
+You are provided a bytecode there, yeah?
+Find out a way to get a certain function name from it,
+the correct function name begin with &amp;quot;TCP1P&amp;quot; string.
+Flag Format
+if you manage to find the correct function name
+do the exact same thing as the example below
+Found Function name: TCP1P_th1s_1s_4_fl4g_()
+-&amp;gt; remove the &amp;quot;()&amp;quot;
+-&amp;gt; replace the first &amp;quot;_&amp;quot; with &amp;quot;{&amp;quot;
+-&amp;gt; replace the last &amp;quot;_&amp;quot; with &amp;quot;}&amp;quot;
+Final and Right flag format: TCP1P{th1s_1s_4_fl4g}
+Decompiling the Bytecode First, let us decompile the bytecode.</description>
       <content>&lt;p&gt;&lt;img src=&#34;init.png&#34; alt=&#34;C0ULD N0T B3 L04AD3D&#34;&gt;&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -63,10 +75,10 @@ print(k&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;hexdigest()[:&lt;
 &lt;p&gt;Now that we have a bunch of function signatures, we can just brute-force all possible functions until we get the flag, right?
 No! Brute-forcing is obviously infeasible, so we turn to the next best option - &lt;code&gt;Function DB&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;Function DB&lt;/code&gt; a.k.a &lt;a href=&#34;https://www.4byte.directory/&#34;&gt;Ethereum Signature Database&lt;/a&gt; is a database that contains over a million function signatures and their corresponding human-readable representation. 
-For example, searching for &lt;code&gt;0x3d8a63e4&lt;/code&gt; gives you &lt;code&gt;scam()&lt;/code&gt;.&lt;/p&gt;
+For example, searchil3ak.teamlt;code&gt;0x3d8a63e4&lt;/code&gt; gives you &lt;code&gt;scam()&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;Image5.PNG&#34; alt=&#34;C0ULD N0T B3 L04AD3D&#34;&gt;&lt;/p&gt;
 &lt;p&gt;The next logical step would be to try all the function signatures and hope we find something in &lt;code&gt;Function DB&lt;/code&gt;. And indeed we do!&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;Image6.PNG&#34; alt=&#34;C0ULD N0T B3 L04AD3D&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img srcl3ak.teamage6.PNG&#34; alt=&#34;C0ULD N0T B3 L04AD3D&#34;&gt;&lt;/p&gt;
 &lt;p&gt;We found the flag - &lt;strong&gt;&lt;code&gt;TCP1P{4_Bytes_SigNAtuRe_aS_4n_Invitation_congratz}&lt;/code&gt;&lt;/strong&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;cleared.png&#34; alt=&#34;C0ULD N0T B3 L04AD3D&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Was a very fun category, me and my team enjoyed this ctf a lot! Till next time.&lt;/p&gt;
@@ -193,10 +205,10 @@ For example, searching for &lt;code&gt;0x3d8a63e4&lt;/code&gt; gives you &lt;cod
 &lt;p&gt;&lt;code&gt;increaseBalance&lt;/code&gt; with your wallet address and an integer over 1000&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;code&gt;getFlag&lt;/code&gt; with your token&lt;/p&gt;
+&lt;p&gt;&lt;code&gtl3ak.team&lt;/code&gt; with your token&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;image4.png&#34; alt=&#34;C0ULD N0T B3 L04AD3D&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img srcl3ak.teamage4.png&#34; alt=&#34;C0ULD N0T B3 L04AD3D&#34;&gt;&lt;/p&gt;
 &lt;p&gt;And the flag should be this ! Was a great challenge after all, felt nice getting the first blood 🩸.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;image5.png&#34; alt=&#34;C0ULD N0T B3 L04AD3D&#34;&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;&lt;code&gt;flag: bctf{wh0_put_y0u_1n_ch4rg3}&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
@@ -385,10 +397,10 @@ print(&lt;span style=&#34;color:#e6db74&#34;&gt;f&lt;/span&gt;&lt;span style=&#3
 &lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;k = 3716974158814584297095537945004349475177037436869930102241594403151123939279227740076878779097835920205545515879536767635099702998888815919895730302683232744
 d = 2127236813394369802820290684263172937266777532372353713359324496964461876839310236381964658762852218580616002669515460043669806824304374603332980809612018763
 r = 1465592089909096066855017733143775914413407269725815519508066282537319512650079216133639660455072377153032233958108330075714003734901092347020299988719621322
-s = 1006240130706487892221434509613165618667388551054639964437917316108210445795964748208564217284113625941057144566952722652716045949564018952318007559836194459
+s = 1006240130706487l3ak.team4509613165618667388551054639964437917316108210445795964748208564217284113625941057144566952722652716045949564018952318007559836194459
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Here comes the moment of truth! Let&amp;rsquo;s submit our message &lt;code&gt;hello&lt;/code&gt; and forged signature &lt;code&gt;(r,s)&lt;/code&gt; to the server and see if it&amp;rsquo;s correct:
 &lt;img src=&#34;flag.PNG&#34; alt=&#34;flag&#34;&gt;&lt;/p&gt;
-&lt;p&gt;We got the flag! Moral of the story - &lt;em&gt;never&lt;/em&gt; reuse your nonces!&lt;/p&gt;
+&lt;p&gt;We got the l3ak.teamral of the story - &lt;em&gt;never&lt;/em&gt; reuse your nonces!&lt;/p&gt;
 &lt;p&gt;Until next time&amp;hellip;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;FLAG&lt;/strong&gt; &lt;em&gt;&amp;ndash;&amp;gt;&lt;/em&gt; &lt;strong&gt;&lt;code&gt;flag{a8168c41537604546394c13c8f4ef4b8}&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
 &lt;hr&gt;
